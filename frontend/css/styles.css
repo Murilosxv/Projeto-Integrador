@@ -1,0 +1,64 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    height: 100vh; /* Altura total da página */
+}
+
+header {
+    height: 80px; /* Aumenta a altura do header */
+    width: 100%; /* O header ocupa toda a largura */
+    display: flex;
+    align-items: center;
+    padding: 0 20px; /* Espaço nas laterais */
+    background-color: #003366; /* Cor do fundo do header */
+    color: white; /* Cor do texto no header */
+}
+
+.logo img {
+    height: 100px; /* Ajuste a altura da logo conforme necessário */
+}
+
+.container {
+    display: flex;
+    height: calc(100vh - 50px); /* Altura da tela menos a altura do header */
+}
+
+.sidebar {
+    width: 200px; /* Largura da sidebar */
+    height: calc(100vh - 80px);; /* Faz a sidebar ocupar toda a altura da página */
+    position: fixed; /* Fixa a sidebar à esquerda */
+    top: 80px; /* Alinha ao topo */
+    left: 0; /* Alinha à esquerda */
+    background-color: #003366; /* Cor do fundo da sidebar */
+    color: white; /* Cor do texto na sidebar */
+    padding: 20px; /* Espaçamento interno */
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 10px 0;
+}
+
+.sidebar ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+.form-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1; /* Faz com que o container do formulário ocupe o espaço restante */
+}
+
+form {
+    margin-left: 220px; /* Espaço para a sidebar */
+    padding: 20px; /* Adiciona espaço ao redor do formulário */
+    display: flex;
+    flex-direction: column; /* Coloca os itens em coluna */
+    gap: 15px; /* Espaço entre os itens do formulário */
+}

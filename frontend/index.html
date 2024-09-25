@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="img/logo.png"> 
+    <title>Gerenciador de Ativos</title>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="img/XXXXXXX.png" alt="Logo da Unilever"> <!-- Coloque o caminho correto da logo aqui -->
+        </div>
+    </header>
+
+    <div class="container">
+        <nav class="sidebar">
+            <ul>
+                <li><a href="#">Seção 1</a></li>
+                <li><a href="#">Seção 2</a></li>
+                <li><a href="#">Seção 3</a></li>
+                <li><a href="#">Seção 4</a></li>
+                <li><a href="#">Seção 5</a></li>
+            </ul>
+        </nav>
+
+        <div class="form-container">
+            <form id="assetForm">
+                <label for="name">Nome do Ativo:</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="acquisitionDate">Data de Aquisição:</label>
+                <input type="date" id="acquisitionDate" name="acquisitionDate" required oninput="limitDateInput(this)">
+
+                <label for="cost">Custo:</label>
+                <input type="text" id="cost" name="cost" placeholder="R$" required>
+
+                <label for="lifeExpectancy">Vida Útil (anos):</label>
+                <input type="number" id="lifeExpectancy" name="lifeExpectancy" required>
+
+                <button type="submit">Adicionar Ativo</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function limitDateInput(input) {
+            const dateValue = new Date(input.value);
+            const currentYear = new Date().getFullYear();
+
+            // Limita o ano a no máximo 4 dígitos
+            if (dateValue.getFullYear() < 1900 || dateValue.getFullYear() > currentYear) {
+                input.value = ''; // Limpa o campo se o ano não for válido
+                alert('Por favor, insira um ano válido entre 1900 e o ano atual.');
+            }
+        }
+
+        document.getElementById('assetForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            // Coleta os dados do formulário
+            const formData = {
+                name: document.getElementById('name').value,
+                acquisitionDate: document.getElementById('acquisitionDate').value,
+                cost: document.getElementById('cost').value,
+                lifeExpectancy: document.getElementById('lifeExpectancy').value,
+            };
+
+            try {
+                // Simulação do envio de dados para um servidor
+                const response = await fetch('http://localhost:3000/assets', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Erro ao enviar os dados');
+                }
+
+                // Limpa o formulário após o envio
+                document.getElementById('assetForm').reset();
+                alert('Ativo adicionado com sucesso!');
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('Falha ao adicionar o ativo. Tente novamente.');
+            }
+        });
+
+        // Formatar o campo de custo em R$
+        document.getElementById('cost').addEventListener('input', function() {
+            let value = this.value.replace(/[^0-9]/g, ''); // Remove caracteres que não são números
+            value = (value / 100).toFixed(2); // Converte para decimal
+            const formattedValue = new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL',
+            }).format(value); // Formata como moeda
+
+            this.value = formattedValue; // Atualiza o valor do input
+        });
+    </script>
+</body>
+</html>

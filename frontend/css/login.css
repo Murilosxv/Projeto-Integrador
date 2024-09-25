@@ -1,0 +1,64 @@
+body {
+    background-color: rgb(235, 235, 235); /* Fundo branco */
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+    height: 100vh; /* Altura total da tela */
+    margin: 0;
+}
+
+.login-container {
+    background-color: white; /* Quadrado branco */
+    border: 1px solid #ccc; /* Borda leve */
+    border-radius: 8px; /* Bordas arredondadas */
+    padding: 20px; /* Espaçamento interno uniforme */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    width: 300px; /* Largura do quadrado */
+    text-align: center; /* Centraliza o texto */
+}
+
+.logo {
+    max-width: 100%; /* Limita a largura da imagem */
+    height: 180px; /* Mantém a proporção */
+    margin-bottom: 20px; /* Espaçamento abaixo da imagem */
+}
+
+h1 {
+    color: #045bb3; /* Cor do texto em azul escuro */
+}
+
+label {
+    display: block; /* Faz os labels ocuparem a linha toda */
+    margin-bottom: 5px; /* Espaçamento abaixo do label */
+    text-align: left; /* Alinha o texto à esquerda */
+    padding-left: 10px; /* Espaçamento à esquerda */
+    padding-right: 10px; /* Espaçamento à direita */
+}
+
+input {
+    width: calc(100% - 20px); /* Largura total menos espaço dos lados */
+    padding: 10px; /* Espaçamento interno */
+    margin-bottom: 15px; /* Espaçamento abaixo do campo */
+    border: 1px solid #ccc; /* Borda leve */
+    border-radius: 4px; /* Bordas arredondadas */
+}
+
+.login-button {
+    background-color: #045bb3; /* Fundo azul escuro */
+    color: white; /* Cor do texto */
+    border: none; /* Remove a borda padrão */
+    border-radius: 4px; /* Bordas arredondadas */
+    padding: 10px; /* Espaçamento interno */
+    cursor: pointer; /* Muda o cursor para indicar que é clicável */
+    width: 100%; /* Largura total */
+}
+
+.login-button:hover {
+    background-color: #00509e; /* Cor ao passar o mouse */
+}
+
+.forgot-password {
+    color: #045bb3; /* Cor do texto em azul escuro */
+    margin-top: 10px; /* Espaçamento acima do texto */
+    cursor: pointer; /* Indica que é clicável */
+}
