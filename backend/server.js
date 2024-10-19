@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json()); // Para interpretar JSON no corpo das requisições
 
 // Conectar ao MongoDB
-const mongoURI = 'mongodb://<usuario>:<senha>@localhost:27017/<nome_do_banco>'; // Insira suas credenciais aqui
+const mongoURI = 'mongodb+srv://camilgriloramos:activos123@activos.p2xqg.mongodb.net/'; // Insira suas credenciais aqui
 mongoose.connect(mongoURI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
