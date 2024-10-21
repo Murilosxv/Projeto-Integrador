@@ -1,64 +1,150 @@
-body {
-    font-family: Arial, sans-serif;
+* {
     margin: 0;
-    height: 100vh; /* Altura total da página */
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
 }
 
-header {
-    height: 80px; /* Aumenta a altura do header */
-    width: 100%; /* O header ocupa toda a largura */
+body {
     display: flex;
-    align-items: center;
-    padding: 0 20px; /* Espaço nas laterais */
-    background-color: #003366; /* Cor do fundo do header */
-    color: white; /* Cor do texto no header */
-}
-
-.logo img {
-    height: 100px; /* Ajuste a altura da logo conforme necessário */
+    height: 100vh;
+    background-color: #f4f4f9;
 }
 
 .container {
     display: flex;
-    height: calc(100vh - 50px); /* Altura da tela menos a altura do header */
+    width: 100%;
 }
 
 .sidebar {
-    width: 200px; /* Largura da sidebar */
-    height: calc(100vh - 80px);; /* Faz a sidebar ocupar toda a altura da página */
-    position: fixed; /* Fixa a sidebar à esquerda */
-    top: 80px; /* Alinha ao topo */
-    left: 0; /* Alinha à esquerda */
-    background-color: #003366; /* Cor do fundo da sidebar */
-    color: white; /* Cor do texto na sidebar */
-    padding: 20px; /* Espaçamento interno */
+    width: 250px;
+    background-color: #2e47a4;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.sidebar ul {
-    list-style-type: none;
-    padding: 0;
+.logo {
+    width: 200px;
+    margin-bottom: 40px;
 }
 
-.sidebar ul li {
-    margin: 10px 0;
+.nav-menu {
+    width: 100%;
 }
 
-.sidebar ul li a {
-    color: white;
+.nav-menu a {
+    display: block;
+    color: #fff;
     text-decoration: none;
+    padding: 15px 20px;
+    background-color: #2e47a4;
+    margin-bottom: 10px;
+    text-align: left;
 }
 
-.form-container {
+.nav-menu a:hover {
+    background-color: #1e357a;
+}
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #2e47a4; /* Adiciona o fundo azul */
+    padding: 15px 20px; /* Ajusta o espaçamento */
+    border-radius: 5px; /* Canto arredondado conforme a imagem */
+}
+
+.header h1 {
+    color: white; /* Texto em branco */
+    margin: 0;
+}
+
+.user-info {
     display: flex;
     align-items: center;
-    justify-content: center;
-    flex-grow: 1; /* Faz com que o container do formulário ocupe o espaço restante */
 }
 
-form {
-    margin-left: 220px; /* Espaço para a sidebar */
-    padding: 20px; /* Adiciona espaço ao redor do formulário */
+.user-info span {
+    color: white; /* Texto em branco */
+    margin-right: 10px;
+    font-size: 16px;
+}
+
+.user-icon {
+    font-size: 20px; /* Tamanho do ícone */
+    color: white; /* Cor do ícone */
+    background-color: #2e47a4;
+    padding: 10px;
+    border-radius: 50%; /* Para arredondar o ícone */
+}
+
+.overview {
     display: flex;
-    flex-direction: column; /* Coloca os itens em coluna */
-    gap: 15px; /* Espaço entre os itens do formulário */
+    justify-content: space-between;
+    margin: 20px 0;
+}
+
+.card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 30%;
+}
+
+.card span {
+    font-size: 24px;
+    color: #2e47a4;
+    font-weight: bold;
+}
+
+.manage-equipment, .inventory-qr, .inventory-history {
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.manage-equipment table, .inventory-history table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.manage-equipment table th, .manage-equipment table td, .inventory-history table th, .inventory-history table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.btn-edit, .btn-remove, .btn-scan {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-edit {
+    background-color: #4caf50;
+    color: white;
+}
+
+.btn-remove {
+    background-color: #f44336;
+    color: white;
+}
+
+.btn-scan {
+    background-color: #2e47a4;
+    color: white;
+    margin-top: 10px;
 }
