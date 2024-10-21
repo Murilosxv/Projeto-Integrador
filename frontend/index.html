@@ -1,109 +1,87 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="icon" href="img/logo.png"> 
-    <title>Gerenciador de Ativos</title>
+    <title>Gerenciamento de Equipamentos</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <img src="img/XXXXXXX.png" alt="Logo da Unilever"> <!-- Coloque o caminho correto da logo aqui -->
-        </div>
-    </header>
-
     <div class="container">
-        <nav class="sidebar">
-            <ul>
-                <li><a href="#">Seção 1</a></li>
-                <li><a href="#">Seção 2</a></li>
-                <li><a href="#">Seção 3</a></li>
-                <li><a href="#">Seção 4</a></li>
-                <li><a href="#">Seção 5</a></li>
-            </ul>
-        </nav>
+        <aside class="sidebar">
+            <img src="logo-unilever.jpg" alt="Unilever Logo" class="logo">
+            <nav class="nav-menu">
+                <a href="#">Gerenciar Equipamentos</a>
+                <a href="#">Inventário (QR Code)</a>
+                <a href="#">Histórico de Inventários</a>
+            </nav>
+        </aside>
+        
+        <main class="main-content">
+            <header class="header">
+                <h1>Bem-vindo, Gestor!</h1>
+                <div class="user-info">
+                    <span>Camila Ramos</span>
+                    <i class="fas fa-user user-icon"></i>
+                </div>
+            </header>
+            
+            <section class="overview">
+                <div class="card">Total de Equipamentos <br><span>120</span></div>
+                <div class="card">Inventários Realizados <br><span>45</span></div>
+                <div class="card">Equipamentos em Manutenção <br><span>5</span></div>
+            </section>
 
-        <div class="form-container">
-            <form id="assetForm">
-                <label for="id">ID:</label>
-                <input type="text" id=" id" name="id" required>
-                
-                <label for="name">Nome do Ativo:</label>
-                <input type="text" id="name" name="name" required>
+            <section class="manage-equipment">
+                <h2>Gerenciar Equipamentos</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Data de Aquisição</th>
+                            <th>Código QR</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Impressora 3D</td>
+                            <td>10/02/2023</td>
+                            <td>[QR Code]</td>
+                            <td>
+                                <button class="btn-edit">Editar</button>
+                                <button class="btn-remove">Remover</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
 
-                <label for="acquisitionDate">Data de Aquisição:</label>
-                <input type="date" id="acquisitionDate" name="acquisitionDate" required oninput="limitDateInput(this)">
+            <section class="inventory-qr">
+                <h2>Inventário (QR Code)</h2>
+                <p>Escaneie o QR Code para realizar o inventário do equipamento.</p>
+                <button class="btn-scan">Iniciar Escaneamento</button>
+            </section>
 
-                <label for="cost">Custo:</label>
-                <input type="text" id="cost" name="cost" placeholder="R$" required>
-
-                <label for="lifeExpectancy">Vida Útil (anos):</label>
-                <input type="number" id="lifeExpectancy" name="lifeExpectancy">
-
-                <button type="submit">Adicionar Ativo</button>
-            </form>
-        </div>
+            <section class="inventory-history">
+                <h2>Histórico de Inventários</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Equipamento</th>
+                            <th>Último Inventário</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Computador</td>
+                            <td>12/08/2024</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </main>
     </div>
-
-    <script>
-        function limitDateInput(input) {
-            const dateValue = new Date(input.value);
-            const currentYear = new Date().getFullYear();
-
-            // Limita o ano a no máximo 4 dígitos
-            if (dateValue.getFullYear() < 1900 || dateValue.getFullYear() > currentYear) {
-                input.value = ''; // Limpa o campo se o ano não for válido
-                alert('Por favor, insira um ano válido entre 1900 e o ano atual.');
-            }
-        }
-
-        document.getElementById('assetForm').addEventListener('submit', async function(event) {
-            event.preventDefault();
-
-            // Coleta os dados do formulário
-            const formData = {
-                name: document.getElementById('name').value,
-                acquisitionDate: document.getElementById('acquisitionDate').value,
-                cost: document.getElementById('cost').value,
-                lifeExpectancy: document.getElementById('lifeExpectancy').value,
-            };
-
-            try {
-                // Simulação do envio de dados para um servidor
-                const response = await fetch('http://localhost:3000/assets', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData),
-                });
-
-                if (!response.ok) {
-                    throw new Error('Erro ao enviar os dados');
-                }
-
-                // Limpa o formulário após o envio
-                document.getElementById('assetForm').reset();
-                alert('Ativo adicionado com sucesso!');
-            } catch (error) {
-                console.error('Erro:', error);
-                alert('Falha ao adicionar o ativo. Tente novamente.');
-            }
-        });
-
-        // Formatar o campo de custo em R$
-        document.getElementById('cost').addEventListener('input', function() {
-            let value = this.value.replace(/[^0-9]/g, ''); // Remove caracteres que não são números
-            value = (value / 100).toFixed(2); // Converte para decimal
-            const formattedValue = new Intl.NumberFormat('pt-BR', {
-                style: 'currency',
-                currency: 'BRL',
-            }).format(value); // Formata como moeda
-
-            this.value = formattedValue; // Atualiza o valor do input
-        });
-    </script>
 </body>
 </html>
