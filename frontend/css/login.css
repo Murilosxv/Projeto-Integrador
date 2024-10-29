@@ -1,10 +1,11 @@
 body {
-    background-color: rgb(235, 235, 235); /* Fundo branco */
+    background-color: rgb(255, 255, 255); /* Fundo branco */
     display: flex;
     justify-content: center; /* Centraliza horizontalmente */
     align-items: center; /* Centraliza verticalmente */
     height: 100vh; /* Altura total da tela */
     margin: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 .login-container {
@@ -24,7 +25,8 @@ body {
 }
 
 h1 {
-    color: #045bb3; /* Cor do texto em azul escuro */
+    color: #000000; /* Cor do texto em azul escuro */
+    font-weight: bold;
 }
 
 label {
@@ -61,4 +63,17 @@ input {
     color: #045bb3; /* Cor do texto em azul escuro */
     margin-top: 10px; /* Espaçamento acima do texto */
     cursor: pointer; /* Indica que é clicável */
+}
+
+.register-link {
+    margin-top: 10px; /* Espaço acima do link */
+}
+
+.register-link a {
+    color: #045bb3; /* Cor do link */
+    text-decoration: none; /* Remover sublinhado */
+}
+
+.register-link a:hover {
+    text-decoration: underline; /* Sublinhado ao passar o mouse */
 }
