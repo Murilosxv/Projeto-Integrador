@@ -22,8 +22,9 @@
             <header class="header">
                 <h1>Bem-vindo, Gestor!</h1>
                 <div class="user-info">
-                    <span>Camila Ramos</span>
+                    <span id="user-email">Carregando...</span> <!-- Atualizado para exibir o e-mail -->
                     <i class="fas fa-user user-icon"></i>
+                    <button class="btn-logout" onclick="logout()">Sair</button>
                 </div>
             </header>
             
@@ -83,5 +84,20 @@
             </section>
         </main>
     </div>
+
+    <script>
+        // Função para carregar o e-mail do usuário no elemento apropriado
+        document.addEventListener('DOMContentLoaded', () => {
+            const email = localStorage.getItem('email') || 'Usuário';
+            document.getElementById('user-email').textContent = email; // Atualiza o span com o e-mail do usuário
+        });
+
+        // Função de logout
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('email');
+            window.location.href = 'login.html'; // Redireciona para a página de login
+        }
+    </script>
 </body>
 </html>
