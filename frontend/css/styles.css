@@ -86,6 +86,19 @@ body {
     border-radius: 50%; /* Para arredondar o ícone */
 }
 
+.btn-logout {
+    background-color: transparent; /* Fundo transparente */
+    border: none; /* Sem borda */
+    color: #ffffff; /* Cor para destacar */
+    font-size: 0.8rem; /* Tamanho da fonte */
+    cursor: pointer; /* Muda o cursor para pointer */
+    margin-left: 10px; /* Espaço à esquerda */
+}
+
+.btn-logout:hover {
+    text-decoration: underline; /* Adiciona um efeito ao passar o mouse */
+}
+
 .overview {
     display: flex;
     justify-content: space-between;
