@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/login.css">
+    <title>Página de Cadastro</title>
+</head>
+<body>
+    <div class="login-container">
+        <img src="img/logo.png" alt="Logo Unilever" class="logo">
+        <h1>Crie sua conta</h1>
+        
+        <label for="email">E-mail</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="password">Senha</label>
+        <input type="password" id="password" name="password" required>
+
+        <label for="confirm-password">Confirme a Senha</label>
+        <input type="password" id="confirm-password" name="confirm-password" required>
+
+        <button class="login-button" onclick="registerUser()">Cadastrar</button>
+
+        <p class="forgot-password" onclick="redirectToLogin()">Já tem uma conta? Login</p>
+    </div>
+
+    <script src="js/register.js"></script>
+</body>
+</html>
