@@ -7,7 +7,7 @@
 
 body {
     display: flex;
-    height: 100vh;
+    height: 100%;
     background-color: #f4f4f9;
 }
 
@@ -23,6 +23,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: 100%;
 }
 
 .logo {
@@ -42,6 +43,7 @@ body {
     background-color: #2e47a4;
     margin-bottom: 10px;
     text-align: left;
+    transition: background-color 0.3s; /* Transição suave */
 }
 
 .nav-menu a:hover {
@@ -101,7 +103,7 @@ body {
 
 .overview {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     margin: 20px 0;
 }
 
@@ -120,7 +122,7 @@ body {
     font-weight: bold;
 }
 
-.manage-equipment, .inventory-qr, .inventory-history {
+.manage-equipment, .inventory-history {
     background-color: #fff;
     padding: 20px;
     margin-bottom: 20px;
@@ -139,25 +141,61 @@ body {
     text-align: left;
 }
 
-.btn-edit, .btn-remove, .btn-scan {
+.manage-equipment table th {
+    background-color: #f4f4f9; /* Fundo diferente para cabeçalho */
+}
+
+.btn-edit, .btn-remove {
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 0.9rem; /* Tamanho de fonte para botões */
 }
 
-.btn-edit {
-    background-color: #4caf50;
-    color: white;
+.add-equipment {
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.btn-remove {
-    background-color: #f44336;
-    color: white;
+.add-equipment h2 {
+    color: #2e47a4;
+    margin-bottom: 15px;
 }
 
-.btn-scan {
-    background-color: #2e47a4;
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.add-equipment-btn {
+    width: 100%; /* Faz o botão ocupar toda a largura */
+    background-color: #007bff;
     color: white;
-    margin-top: 10px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+.add-equipment-btn:hover {
+    background-color: #0056b3; /* Cor do botão ao passar o mouse */
 }
