@@ -7,13 +7,21 @@
 
 body {
     display: flex;
-    height: 100%;
     background-color: #f4f4f9;
+    min-height: 100vh; 
 }
 
 .container {
     display: flex;
     width: 100%;
+    min-height: 100vh; 
+}
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column; 
 }
 
 .sidebar {
@@ -23,7 +31,6 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100%;
 }
 
 .logo {
@@ -33,6 +40,7 @@ body {
 
 .nav-menu {
     width: 100%;
+    font-size: large;
 }
 
 .nav-menu a {
@@ -48,11 +56,6 @@ body {
 
 .nav-menu a:hover {
     background-color: #1e357a;
-}
-
-.main-content {
-    flex: 1;
-    padding: 20px;
 }
 
 .header {
@@ -145,14 +148,6 @@ body {
     background-color: #f4f4f9; /* Fundo diferente para cabeçalho */
 }
 
-.btn-edit, .btn-remove {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.9rem; /* Tamanho de fonte para botões */
-}
-
 .add-equipment {
     background-color: #fff;
     padding: 20px;
@@ -198,4 +193,78 @@ body {
 
 .add-equipment-btn:hover {
     background-color: #0056b3; /* Cor do botão ao passar o mouse */
+}
+
+.details-container {
+    padding: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.asset-details {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.asset-details h2 {
+    color: #2e47a4;
+    margin-bottom: 20px;
+}
+
+.asset-details label {
+    font-weight: bold;
+    color: #333;
+    margin-top: 10px;
+    display: block;
+}
+
+.asset-details input, .asset-details select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.asset-details .buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.buttons button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+}
+
+.btn-edit {
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem; /* Tamanho de fonte para botões */
+    font-weight: bold;
+    background-color: #007bff;
+}
+
+.btn-remove {
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem; /* Tamanho de fonte para botões */
+    font-weight: bold;
+    background-color: #f44336;
 }
