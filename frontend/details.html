@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Ativo</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="./img/white.svg">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <img src="img/logo-unilever.jpg" alt="Unilever Logo" class="logo">
+            <nav class="nav-menu">
+                <a href="index.html">Página Inicial</a>
+            </nav>
+        </aside>
+        
+        <main class="main-content">
+            <header class="header">
+                <h1>Detalhes do Ativo</h1>
+                <div class="user-info">
+                    <span id="user-email">Carregando...</span>
+                    <i class="fas fa-user user-icon"></i>
+                    <button class="btn-logout" onclick="logout()">Sair</button>
+                </div>
+            </header>
+
+            <section class="details-container">
+                <div class="asset-details">
+                    <h2>Informações do Ativo</h2>
+
+                    <!-- Campos de detalhes do ativo -->
+                    <label>ID do Ativo:</label>
+                    <input type="text" id="asset-id" disabled>
+
+                    <label>Nome:</label>
+                    <input type="text" id="asset-name" disabled>
+
+                    <label>Data de Aquisição:</label>
+                    <input type="date" id="asset-acquisition-date" disabled>
+
+                    <label>Custo:</label>
+                    <input type="number" id="asset-cost" disabled>
+
+                    <label>Expectativa de Vida (em anos):</label>
+                    <input type="number" id="asset-life-expectancy" disabled>
+
+                    <label>Status:</label>
+                    <select id="asset-status" onchange="updateStatus()" disabled>
+                        <option value="active">Ativo</option>
+                        <option value="maintenance">Inativo</option>
+                    </select>
+
+                    <label>QR Code:</label>
+                    <img id="asset-qr-code" src="" alt="QR Code" style="width: 100px; height: 100px; cursor: pointer;">
+
+                    <!-- Botões de ação -->
+                    <div class="buttons">
+                        <button class="btn-edit" onclick="toggleEdit()">Editar</button>
+                        <button class="btn-remove" onclick="removeAsset()">Remover</button>
+                        <button class="btn-save" onclick="saveAsset()" style="display:none;">Salvar</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Carregar e exibir o email do usuário
+        document.addEventListener('DOMContentLoaded', async () => {
+            const email = localStorage.getItem('email') || 'Usuário';
+            document.getElementById('user-email').textContent = email;
+            await loadAssetDetails();
+        });
+
+        // Função para carregar o ID do ativo da URL
+        function getAssetIdFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('id');
+        }
+
+        // Função para carregar os detalhes do ativo
+        async function loadAssetDetails() {
+            const assetId = getAssetIdFromURL();
+            if (!assetId) {
+                alert("ID do ativo não encontrado na URL.");
+                return;
+            }
+            const token = localStorage.getItem('token');
+            try {
+                const response = await fetch(`http://localhost:3000/api/assets/${assetId}`, { 
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!response.ok) {
+                    const errorResponse = await response.text(); // Obtenha a resposta como texto
+                    console.error('Erro no servidor:', errorResponse); // Log do erro para depuração
+                    throw new Error(`Erro: ${errorResponse}`);
+                }
+
+                const asset = await response.json();
+
+                // Preenchendo os campos com os dados do ativo
+                document.getElementById('asset-id').value = asset._id;
+                document.getElementById('asset-name').value = asset.name;
+                document.getElementById('asset-acquisition-date').value = asset.acquisitionDate;
+                document.getElementById('asset-cost').value = asset.cost;
+                document.getElementById('asset-life-expectancy').value = asset.lifeExpectancy;
+                document.getElementById('asset-status').value = asset.status;
+                document.getElementById('asset-qr-code').src = asset.qrCode;
+            } catch (error) {
+                alert(`Erro ao buscar os detalhes do ativo: ${error.message}`);
+            }
+        }
+
+        // Função para logout
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('email');
+            window.location.href = 'login.html';
+        }
+
+        // Alternar entre modo de visualização e edição
+        function toggleEdit() {
+            const fields = document.querySelectorAll('.asset-details input, .asset-details select');
+            const isEditing = fields[0].disabled;
+
+            fields.forEach(field => {
+                field.disabled = !isEditing;
+            });
+
+            document.querySelector('.btn-save').style.display = isEditing ? 'block' : 'none';
+            document.querySelector('.btn-edit').textContent = isEditing ? 'Cancelar' : 'Editar';
+        }
+
+        // Função para salvar as alterações
+        async function saveAsset() {
+            const assetId = document.getElementById('asset-id').value;
+            const name = document.getElementById('asset-name').value;
+            const acquisitionDate = document.getElementById('asset-acquisition-date').value;
+            const cost = document.getElementById('asset-cost').value;
+            const lifeExpectancy = document.getElementById('asset-life-expectancy').value;
+            const status = document.getElementById('asset-status').value;
+            const token = localStorage.getItem('token');
+
+            const updatedAsset = {
+                name,
+                acquisitionDate,
+                cost: parseFloat(cost),
+                lifeExpectancy: parseInt(lifeExpectancy),
+                status,
+            };
+
+            try {
+                const response = await fetch(`http://localhost:3000/api/assets/${assetId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(updatedAsset),
+                });
+
+                if (!response.ok) {
+                    const errorResponse = await response.text();
+                    console.error('Erro no servidor:', errorResponse);
+                    throw new Error(`Erro ao atualizar o ativo: ${errorResponse}`);
+                }
+
+                alert('Ativo atualizado com sucesso!');
+
+                window.location.reload();
+            } catch (error) {
+                alert('Erro ao conectar ao servidor: ' + error.message);
+                console.error('Erro:', error);
+            }
+        }
+
+
+    // Função para atualizar o status do ativo
+        async function updateStatus() {
+            const id = document.getElementById('asset-id').value;
+            const status = document.getElementById('asset-status').value;
+            const token = localStorage.getItem('token');
+
+            try {
+                const response = await fetch(`http://localhost:3000/api/assets/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Erro ao atualizar status do ativo');
+                }
+
+                alert('Status atualizado com sucesso!');
+
+            } catch (error) {
+                console.error('Erro ao atualizar status do ativo:', error);
+            }
+        }
+
+
+        // Função para remover o ativo
+        async function removeAsset() {
+            const assetId = document.getElementById('asset-id').value;
+            const token = localStorage.getItem('token');
+
+            try {
+                const response = await fetch(`http://localhost:3000/api/assets/${assetId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                if (response.ok) {
+                    alert('Ativo removido com sucesso!');
+                    window.location.href = 'index.html';
+                } else {
+                    alert('Erro ao remover o ativo.');
+                }
+            } catch (error) {
+                alert('Erro ao conectar ao servidor.');
+            }
+        }
+    </script>
+</body>
+</html>
