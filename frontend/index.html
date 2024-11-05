@@ -6,14 +6,14 @@
     <title>Gerenciamento de Equipamentos</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="./img/white.svg">
 </head>
 <body>
     <div class="container">
         <aside class="sidebar">
             <img src="img/logo-unilever.jpg" alt="Unilever Logo" class="logo">
             <nav class="nav-menu">
-                <a href="#">Gerenciar Equipamentos</a>
-                <a href="#">Histórico de Inventários</a>
+                <a href="index.html">Página Inicial</a>
             </nav>
         </aside>
         
@@ -72,125 +72,117 @@
                 </form>
             </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            const email = localStorage.getItem('email') || 'Usuário';
-            document.getElementById('user-email').textContent = email;
-            await loadEquipmentData();
-        });
+            <script>
+                document.addEventListener('DOMContentLoaded', async () => {
+                    const email = localStorage.getItem('email') || 'Usuário';
+                    document.getElementById('user-email').textContent = email;
+                    await loadEquipmentData();
+                });
 
-        // Função de logout
-        function logout() {
-            localStorage.removeItem('token');
-            localStorage.removeItem('email');
-            window.location.href = 'login.html';
-        }
+                // Função de logout
+                function logout() {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('email');
+                    window.location.href = 'login.html';
+                }
 
-        // Função para carregar os dados de equipamentos e atualizar a interface
-        async function loadEquipmentData() {
-    const token = localStorage.getItem('token');
+                // Função para carregar os dados de equipamentos e atualizar a interface
+                async function loadEquipmentData() {
+                    const token = localStorage.getItem('token');
+                    const options = {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    };
 
-    // Configuração da requisição com autenticação
-    const options = {
-        headers: { 'Authorization': `Bearer ${token}` } // Corrigido para usar template literals
-    };
+                    try {
+                        const equipmentRes = await fetch('http://localhost:3000/api/assets', options);
 
-    try {
-        // Requisição para obter dados dos equipamentos
-        const equipmentRes = await fetch('http://localhost:3000/api/assets', options); // URL atualizado
+                        if (!equipmentRes.ok) {
+                            throw new Error('Erro ao carregar dados');
+                        }
 
-        // Verificar se a resposta foi bem-sucedida
-        if (!equipmentRes.ok) {
-            throw new Error('Erro ao carregar dados');
-        }
+                        const equipmentData = await equipmentRes.json();
+                        document.getElementById('total-equipment').textContent = equipmentData.totalAssets || 0; // Atualiza a contagem total de ativos 
+                        document.getElementById('equipment-maintenance').textContent = equipmentData.inMaintenance || 0; // Atualiza a contagem de ativos em manutenção
+                        
+                        const tableBody = document.getElementById('equipment-table-body');
+                        tableBody.innerHTML = '';
 
-        // Extração dos dados da resposta
-        const equipmentData = await equipmentRes.json();
+                        equipmentData.assets.forEach(asset => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${asset._id}</td>
+                                <td>${asset.name}</td>
+                                <td><img src="${asset.qrCode}" alt="QR Code" onclick="goToAssetDetails('${asset._id}')" style="cursor:pointer;"></td>
+                                <td>
+                                    <button class="btn-edit" onclick="goToAssetDetails('${asset._id}')">Editar</button>
+                                    <button class="btn-remove" onclick="removeAsset('${asset._id}')">Remover</button>
+                                </td>
+                            `;
+                            tableBody.appendChild(row);
+                        });
+                    } catch (error) {
+                        console.error('Erro ao carregar dados dos ativos:', error);
+                    }
+                }
 
-        // Atualiza as contagens de total (substitua com o que for necessário)
-        document.getElementById('total-equipment').textContent = equipmentData.totalAssets || 0; // Modificado para refletir a estrutura correta
-        // Remover partes de contagem de inventários e manutenção, já que não existem
+                // Função para redirecionar para a página de detalhes do ativo
+                function goToAssetDetails(id) {
+                    window.location.href = `details.html?id=${id}`;
+                }
 
-        // Preencher tabela de equipamentos
-        const tableBody = document.getElementById('equipment-table-body');
-        tableBody.innerHTML = ''; // Limpar conteúdo existente
+                // Função para adicionar novo ativo
+                document.getElementById('add-equipment-form').addEventListener('submit', async (event) => {
+                    event.preventDefault();
 
-        equipmentData.assets.forEach(asset => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${asset._id}</td> <!-- Ajuste para acessar o id corretamente -->
-                <td>${asset.name}</td>
-                <td><img src="${asset.qrCode}" alt="QR Code" onclick="window.open('${asset.qrCode}', '_blank');" style="cursor:pointer;"></td>
-                <td>
-                    <button class="btn-edit" onclick="editAsset('${asset._id}')">Editar</button> <!-- Ajuste para acessar o id corretamente -->
-                    <button class="btn-remove" onclick="removeAsset('${asset._id}')">Remover</button> <!-- Ajuste para acessar o id corretamente -->
-                </td>
-            `;
-            tableBody.appendChild(row);
-        });
-    } catch (error) {
-        console.error('Erro ao carregar dados dos ativos:', error);
-    }
-}
+                    const name = document.getElementById('equipment-name').value;
+                    const acquisitionDate = document.getElementById('acquisition-date').value;
+                    const cost = parseFloat(document.getElementById('cost').value);
+                    const lifeExpectancy = parseInt(document.getElementById('life-expectancy').value);
+                    const token = localStorage.getItem('token');
 
+                    try {
+                        const res = await fetch('http://localhost:3000/api/assets', {
+                            method: 'POST',
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ name, acquisitionDate, cost, lifeExpectancy })
+                        });
 
-        // Função para adicionar novo ativo
-    document.getElementById('add-equipment-form').addEventListener('submit', async (event) => {
-    event.preventDefault();
-
-    const name = document.getElementById('equipment-name').value;
-    const acquisitionDate = document.getElementById('acquisition-date').value;
-    const cost = parseFloat(document.getElementById('cost').value);
-    const lifeExpectancy = parseInt(document.getElementById('life-expectancy').value);
-    const token = localStorage.getItem('token');
-
-    // Log para verificar o token e os dados do ativo
-    console.log('Token:', token);
-    console.log('Dados do ativo:', { name, acquisitionDate, cost, lifeExpectancy });
-
-    try {
-        const res = await fetch('http://localhost:3000/api/assets', {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-        },
-            body: JSON.stringify({ name, acquisitionDate, cost, lifeExpectancy })
-        });
-
-
-        if (res.ok) {
-            await loadEquipmentData(); // Atualiza a lista de equipamentos
-            document.getElementById('add-equipment-form').reset(); // Limpa o formulário
-        } else {
-            const errorResponse = await res.json(); // Captura a resposta de erro
-            console.error('Erro ao adicionar ativo:', errorResponse.message);
-        }
-    } catch (error) {
-        console.error('Erro ao conectar com o backend:', error);
-    }
-    });
-
-
-        // Função para remover ativo
-        async function removeAsset(id) {
-            const token = localStorage.getItem('token');
-            try {
-                const res = await fetch(`http://localhost:3000/api/assets/${id}`, { // Corrigido para usar template literals
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': `Bearer ${token}` // Corrigido para usar template literals
+                        if (res.ok) {
+                            await loadEquipmentData();
+                            document.getElementById('add-equipment-form').reset();
+                        } else {
+                            const errorResponse = await res.json();
+                            console.error('Erro ao adicionar ativo:', errorResponse.message);
+                        }
+                    } catch (error) {
+                        console.error('Erro ao conectar com o backend:', error);
                     }
                 });
-                if (res.ok) {
-                    await loadEquipmentData(); // Atualizar dados após remoção
-                } else {
-                    console.error('Erro ao remover ativo');
+
+                // Função para remover ativo
+                async function removeAsset(id) {
+                    const token = localStorage.getItem('token');
+                    try {
+                        const res = await fetch(`http://localhost:3000/api/assets/${id}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'Authorization': `Bearer ${token}`
+                            }
+                        });
+                        if (res.ok) {
+                            await loadEquipmentData();
+                        } else {
+                            console.error('Erro ao remover ativo');
+                        }
+                    } catch (error) {
+                        console.error('Erro ao conectar com o backend:', error);
+                    }
                 }
-            } catch (error) {
-                console.error('Erro ao conectar com o backend:', error);
-            }
-        }
-    </script>
+            </script>
+        </main>
+    </div>
 </body>
 </html>
