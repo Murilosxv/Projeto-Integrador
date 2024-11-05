@@ -268,3 +268,14 @@ body {
     font-weight: bold;
     background-color: #f44336;
 }
+
+.btn-save {
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem; /* Tamanho de fonte para botões */
+    font-weight: bold;
+    background-color: green;
+}
