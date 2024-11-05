@@ -9,18 +9,22 @@ router.get('/', authMiddleware, async (req, res) => {
   try {
     const assets = await Asset.find();
     const totalAssets = assets.length;
-    const inMaintenance = assets.filter(asset => asset.status === 'maintenance').length;
+
+    // Contar ativos em manutenção (status 'Inativo')
+    const inMaintenance = assets.filter(asset => asset.status === 'Inativo').length;
+
     res.json({ assets, totalAssets, inMaintenance });
   } catch (err) {
     res.status(500).json({ message: 'Erro ao buscar ativos' });
   }
 });
 
+
 // Criar um novo ativo com QR Code
 router.post('/', authMiddleware, async (req, res) => {
   try {
     const newAsset = new Asset(req.body);
-    const qrCodeURL = `${process.env.FRONTEND_URL}/detalhes/${newAsset._id}`; // Gera o link para o QR Code
+    const qrCodeURL = `${process.env.FRONTEND_URL}/detalhes/${newAsset._id}`;
     newAsset.qrCode = await QRCode.toDataURL(qrCodeURL);
     await newAsset.save();
     res.status(201).json(newAsset);
@@ -29,15 +33,20 @@ router.post('/', authMiddleware, async (req, res) => {
   }
 });
 
-// Atualizar status do ativo
-router.put('/:id/status', authMiddleware, async (req, res) => {
+// Rota para atualizar informações do ativo
+router.put('/:id', authMiddleware, async (req, res) => {
   const { id } = req.params;
-  const { status } = req.body;
+  const updates = req.body; 
+
   try {
-    const updatedAsset = await Asset.findByIdAndUpdate(id, { status }, { new: true });
-    res.json(updatedAsset);
-  } catch (err) {
-    res.status(500).json({ message: 'Erro ao atualizar status do ativo' });
+      const updatedAsset = await Asset.findByIdAndUpdate(id, updates, { new: true });
+      if (!updatedAsset) {
+          return res.status(404).send('Ativo não encontrado');
+      }
+      res.status(200).json(updatedAsset);
+  } catch (error) {
+      console.error('Erro ao atualizar o ativo:', error);
+      res.status(500).send('Erro ao atualizar o ativo');
   }
 });
 
@@ -49,6 +58,20 @@ router.delete('/:id', authMiddleware, async (req, res) => {
     res.status(204).send();
   } catch (err) {
     res.status(500).json({ message: 'Erro ao deletar ativo' });
+  }
+});
+
+// Rota para obter os detalhes de um ativo específico pelo ID
+router.get('/:id', authMiddleware, async (req, res) => {
+  const { id } = req.params;
+  try {
+      const asset = await Asset.findById(id);
+      if (!asset) {
+          return res.status(404).json({ message: 'Ativo não encontrado' });
+      }
+      res.json(asset);
+  } catch (err) {
+      res.status(500).json({ message: 'Erro ao buscar detalhes do ativo' });
   }
 });
 
